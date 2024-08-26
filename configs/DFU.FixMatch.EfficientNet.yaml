@@ -1,0 +1,34 @@
+BASIC:
+ NAME: FixMatch.EfficientNet
+ RESULT_DIR: /root/autodl-tmp/results/DFU/
+ CLASS_NUM: 4
+
+DATASET:
+ TEST_IMG_ROOT: /root/autodl-tmp/DataBase/DFU/test/
+ TEST_BATCHSIZE: 128
+ TRAIN_IMG_ROOT: /root/autodl-tmp/DataBase/DFU/train/
+ LABEL_BATCHSIZE: 54
+ UNLABEL_BATCHSIZE: 36
+ AUG: ''
+
+TRAIN:
+ EPOCH: 300                    # 1000
+ NET_TYPE: efficientnet-b3    # 务必小写，且带-
+ SSL_TYPE: FixMatch
+ THRESH_WARMUP: False
+ THRESHOLD: 0.95
+
+ LOSS:
+  LOSS_TYPE: CrossEntropy
+  WEIGHT: False
+
+ OPTIMIZER:              
+  TYPE: SGD                   # SGD
+  WEIGHT_DECAY: 0.0           # 不设置就写0，1e-4没有0好
+  MOMENTUM: 0.9
+  LR_SCHEDULER: 0.001
+
+ SCHEDULER: 
+  TYPE: CosineAnnealingWarmRestarts             # Custom\MultiStepLR\StepLR\CosineAnnealingLR\CosineAnnealingWarmRestarts，MultiStepLR更快效果也好
+  PARAMETER_1: 3                                # 2\[30, 60]\2.4\50                 
+  PARAMETER_2: 2                                # 4\0.1\0.97\0.0001
